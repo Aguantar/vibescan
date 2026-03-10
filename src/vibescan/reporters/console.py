@@ -26,28 +26,59 @@ SEVERITY_ICONS: dict[Severity, str] = {
     Severity.INFO: "[i]",
 }
 
+LABELS_EN = {
+    "scan_complete": "Scan Complete",
+    "scanned": "VibeScan scanned {files} files in {root}",
+    "no_issues": "No issues found. Your project looks clean!",
+    "summary": "Summary",
+    "line": "Line",
+    "why": "Why",
+    "fix": "Fix",
+    "exit1": "Exit code 1: CRITICAL or HIGH issues found.",
+    "exit0": "Exit code 0: No critical issues.",
+}
 
-def print_report(result: ScanResult, console: Console | None = None) -> None:
+LABELS_KO = {
+    "scan_complete": "스캔 완료",
+    "scanned": "VibeScan이 {root}에서 {files}개 파일을 스캔했습니다",
+    "no_issues": "이슈가 발견되지 않았습니다. 프로젝트가 안전합니다!",
+    "summary": "요약",
+    "line": "라인",
+    "why": "원인",
+    "fix": "해결",
+    "exit1": "Exit code 1: CRITICAL 또는 HIGH 이슈가 발견되었습니다.",
+    "exit0": "Exit code 0: 심각한 이슈가 없습니다.",
+}
+
+
+def print_report(
+    result: ScanResult,
+    console: Console | None = None,
+    lang: str = "en",
+) -> None:
     console = console or Console()
+    labels = LABELS_KO if lang == "ko" else LABELS_EN
 
     # Header
     console.print()
     console.print(
         Panel(
-            f"[bold]VibeScan[/bold] scanned [cyan]{result.files_scanned}[/cyan] files "
-            f"in [cyan]{result.project_root}[/cyan]",
-            title="Scan Complete",
+            labels["scanned"].format(
+                files=f"[cyan]{result.files_scanned}[/cyan]",
+                root=f"[cyan]{result.project_root}[/cyan]",
+            ),
+            title=labels["scan_complete"],
             border_style="blue",
         )
     )
 
     if not result.issues:
-        console.print("\n[bold green]No issues found. Your project looks clean![/bold green]\n")
+        console.print(f"\n[bold green]{labels['no_issues']}[/bold green]\n")
         return
 
     # Summary table
     summary = result.summary
-    summary_table = Table(title="Summary", show_header=False, box=None, padding=(0, 2))
+    summary_table = Table(title=labels["summary"], show_header=False, box=None, padding=(0, 2))
     summary_table.add_column("Severity", style="bold")
     summary_table.add_column("Count", justify="right")
     for sev in Severity:
@@ -61,29 +92,23 @@ def print_report(result: ScanResult, console: Console | None = None) -> None:
     console.print(summary_table)
     console.print()
 
-    # Issues grouped by file
-    issues_by_file: dict[str, list] = {}
+    # Issues sorted by severity, then by file
     for issue in result.issues:
-        issues_by_file.setdefault(issue.file, []).append(issue)
+        sev = issue.severity
+        icon = SEVERITY_ICONS[sev]
+        color = SEVERITY_COLORS[sev]
 
-    for file_path, issues in sorted(issues_by_file.items()):
-        console.print(f"[bold underline]{file_path}[/bold underline]")
-        for issue in issues:
-            sev = issue.severity
-            icon = SEVERITY_ICONS[sev]
-            color = SEVERITY_COLORS[sev]
-            loc = f":{issue.line}" if issue.line else ""
-
-            console.print(f"  [{color}]{icon}[/{color}] {issue.message}")
-            if issue.line:
-                console.print(f"      Line {issue.line}")
-            console.print(f"      [dim]Why:[/dim] {issue.why}")
-            console.print(f"      [dim]Fix:[/dim] {issue.fix}")
-            console.print()
+        console.print(f"[bold underline]{issue.file}[/bold underline]")
+        console.print(f"  [{color}]{icon}[/{color}] {issue.message}")
+        if issue.line:
+            console.print(f"      {labels['line']} {issue.line}")
+        console.print(f"      [dim]{labels['why']}:[/dim] {issue.why}")
+        console.print(f"      [dim]{labels['fix']}:[/dim] {issue.fix}")
+        console.print()
 
     # Exit code hint
     if result.exit_code != 0:
-        console.print("[bold red]Exit code 1: CRITICAL or HIGH issues found.[/bold red]")
+        console.print(f"[bold red]{labels['exit1']}[/bold red]")
     else:
-        console.print("[bold green]Exit code 0: No critical issues.[/bold green]")
+        console.print(f"[bold green]{labels['exit0']}[/bold green]")
     console.print()

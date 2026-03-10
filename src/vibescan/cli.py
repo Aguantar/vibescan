@@ -35,6 +35,21 @@ def scan(
         "--min-severity", "-s",
         help="Minimum severity to report: critical, high, medium, low, info.",
     ),
+    output_format: str = typer.Option(
+        "console",
+        "--format", "-f",
+        help="Output format: console, json, html.",
+    ),
+    lang: str = typer.Option(
+        "en",
+        "--lang", "-l",
+        help="Output language: en, ko.",
+    ),
+    output_file: str = typer.Option(
+        "",
+        "--output", "-o",
+        help="Output file path (for json/html format).",
+    ),
     version: bool = typer.Option(
         False,
         "--version", "-v",
@@ -46,7 +61,6 @@ def scan(
     """Scan a project directory for security issues."""
     from vibescan.collector import collect
     from vibescan.models import ScanResult, Severity
-    from vibescan.reporters.console import print_report
     from vibescan.rules import get_all_rules
 
     # Validate min_severity
@@ -55,6 +69,19 @@ def scan(
     except ValueError:
         typer.echo(f"Error: Invalid severity '{min_severity}'. "
                    f"Choose from: critical, high, medium, low, info.")
+        raise typer.Exit(code=2)
+
+    # Validate format
+    fmt = output_format.lower()
+    if fmt not in ("console", "json", "html"):
+        typer.echo(f"Error: Invalid format '{output_format}'. "
+                   f"Choose from: console, json, html.")
+        raise typer.Exit(code=2)
+
+    # Validate language
+    lang = lang.lower()
+    if lang not in ("en", "ko"):
+        typer.echo(f"Error: Invalid language '{lang}'. Choose from: en, ko.")
         raise typer.Exit(code=2)
 
     # Collect project context
@@ -68,8 +95,8 @@ def scan(
     # Filter by severity
     filtered = [i for i in all_issues if i.severity >= threshold]
 
-    # Sort: critical first
-    filtered.sort(key=lambda i: -i.severity.rank)
+    # Sort: critical first, then by file, then by line
+    filtered.sort(key=lambda i: (-i.severity.rank, i.file, i.line or 0))
 
     # Build result
     result = ScanResult(
@@ -80,6 +107,19 @@ def scan(
     )
 
     # Report
-    print_report(result)
+    if fmt == "json":
+        from vibescan.reporters.json_reporter import write_json_report
+        out = Path(output_file) if output_file else None
+        write_json_report(result, output=out)
+        if out:
+            typer.echo(f"JSON report saved → {out}")
+    elif fmt == "html":
+        from vibescan.reporters.html_reporter import write_html_report
+        out = Path(output_file) if output_file else Path("vibescan-report.html")
+        write_html_report(result, output=out, lang=lang)
+        typer.echo(f"HTML report saved → {out}")
+    else:
+        from vibescan.reporters.console import print_report
+        print_report(result, lang=lang)
 
     raise typer.Exit(code=result.exit_code)
