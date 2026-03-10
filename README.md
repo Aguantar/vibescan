@@ -139,7 +139,7 @@ CLI Parser → Config Loader → File Collector → Rule Engine → Aggregator �
 
 | 구분 | 선택 |
 |------|------|
-| 언어 | Python 3.8+ |
+| 언어 | Python 3.10+ |
 | CLI | typer |
 | 콘솔 출력 | rich |
 | 패턴 탐지 | regex (re), ast |
@@ -153,8 +153,9 @@ CLI Parser → Config Loader → File Collector → Rule Engine → Aggregator �
 
 - [x] PRD 작성
 - [x] 아키텍처 설계
-- [ ] MVP 구현 (File Collector + Secret Rule + Console Reporter)
-- [ ] Git Hygiene / Dangerous Pattern / Structure Rule
+- [x] MVP 구현 (File Collector + Secret Rule + Console Reporter)
+- [x] Git Hygiene / Dangerous Pattern / Structure Rule
+- [x] 테스트 (196 tests passing)
 - [ ] JSON / HTML Reporter
 - [ ] PyPI 배포
 - [ ] 소개 웹사이트
