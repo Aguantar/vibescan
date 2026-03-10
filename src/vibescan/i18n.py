@@ -12,12 +12,17 @@ import os
 def detect_lang() -> str:
     """Return 'ko' if the system locale is Korean, else 'en'."""
     try:
-        loc = locale.getlocale()[0] or ""
+        loc = (locale.getlocale()[0] or "").lower()
     except (ValueError, TypeError):
         loc = ""
     if not loc:
-        loc = os.environ.get("LANG", "") or os.environ.get("LANGUAGE", "")
-    if loc.startswith("ko"):
+        loc = (
+            os.environ.get("LANG", "")
+            or os.environ.get("LANGUAGE", "")
+            or os.environ.get("LC_ALL", "")
+        ).lower()
+    # Match both "ko_KR" (Linux/Mac) and "Korean_Korea" (Windows)
+    if loc.startswith("ko") or loc.startswith("korean"):
         return "ko"
     return "en"
 

@@ -16,7 +16,8 @@ class TestCLI:
         result = runner.invoke(app, ["--version"])
         assert result.exit_code == 0
         assert "vibescan" in result.output
-        assert "0.1.0" in result.output
+        from vibescan import __version__
+        assert __version__ in result.output
 
     def test_scan_clean_project(self, tmp_path: Path):
         (tmp_path / "main.py").write_text("print('hello')")
