@@ -105,7 +105,18 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;border-bottom:1px solid var(
 .terminal-wrap{position:relative;z-index:2;max-width:800px;width:100%}
 .terminal-glow{position:absolute;top:-40px;left:-40px;right:-40px;bottom:-40px;background:radial-gradient(ellipse,rgba(16,185,129,.12) 0%,rgba(16,185,129,.04) 50%,transparent 75%);filter:blur(30px);z-index:-1}
 .terminal{background:#fff;backdrop-filter:blur(20px);border:1px solid rgba(0,60,30,.12);border-radius:16px;overflow:hidden;box-shadow:0 40px 80px rgba(0,0,0,.3),0 0 0 1px rgba(0,0,0,.04) inset}
-.light .terminal{box-shadow:0 20px 60px rgba(0,0,0,.06),0 0 0 1px rgba(0,0,0,.04) inset}
+.light .terminal{background:#0e1e18;border-color:rgba(0,0,0,.2);box-shadow:0 20px 60px rgba(0,0,0,.12),0 0 0 1px rgba(0,0,0,.08) inset}
+.light .terminal-bar{border-bottom-color:rgba(255,255,255,.08);background:rgba(255,255,255,.03)}
+.light .terminal-body{color:#8faa9e}
+.light .terminal-title{color:#5e7a6e}
+.light .t-cmd{color:#34d399}
+.light .t-dim{color:#5e7a6e}
+.light .t-crit{color:#f87171}
+.light .t-high{color:#fbbf24}
+.light .t-med{color:#34d399}
+.light .t-low{color:#60a5fa}
+.light .t-sep{color:rgba(255,255,255,.1)}
+.light .t-sum{color:#c8ddd4}
 .terminal-bar{display:flex;align-items:center;padding:16px 20px;border-bottom:1px solid rgba(0,0,0,.08);background:rgba(0,0,0,.02)}
 .window-dots{display:flex;gap:8px}
 .dot{width:12px;height:12px;border-radius:50%}
@@ -218,7 +229,12 @@ footer{border-top:1px solid var(--bd);padding:80px 24px 40px;background:var(--bg
 .light .terminal{border-color:rgba(0,60,30,.15);box-shadow:0 20px 60px rgba(0,0,0,.08),0 0 0 1px rgba(0,60,30,.06) inset}
 .light .terminal-bar{border-bottom-color:rgba(0,60,30,.1);background:rgba(0,60,30,.02)}
 .light .m-card::before{background:linear-gradient(180deg,rgba(0,60,30,.14) 0%,rgba(0,60,30,.04) 100%)}
-.light .mock-box{border-color:rgba(0,60,30,.12)}
+.light .mock-box{background:#0e1e18;border-color:rgba(0,0,0,.2);color:#8faa9e}
+.light .mock-box .t-cmd{color:#34d399}
+.light .mock-box .t-dim{color:#5e7a6e}
+.light .mock-box .t-crit{color:#f87171}
+.light .mock-box .t-high{color:#fbbf24}
+.light .mock-box .t-med{color:#34d399}
 .light .rules-table{border-color:rgba(0,60,30,.15)}
 .light .rules-header{border-bottom-color:rgba(0,60,30,.1)}
 .light .rule-row{border-bottom-color:rgba(0,60,30,.08)}
@@ -257,6 +273,7 @@ footer{border-top:1px solid var(--bd);padding:80px 24px 40px;background:var(--bg
       <a href="#get-started" class="nav-link">Get Started</a>
       <a href="#rules" class="nav-link">Rules</a>
       <a href="#faq" class="nav-link">FAQ</a>
+      <a href="#trust" class="nav-link">Trust</a>
       <div class="theme-toggle" onclick="toggleTheme()" title="Toggle Theme">
         <div class="theme-dot" id="themeDot"></div>
       </div>
@@ -377,7 +394,7 @@ footer{border-top:1px solid var(--bd);padding:80px 24px 40px;background:var(--bg
     <div class="m-card reveal">
       <div class="card-grid" style="grid-template-columns:1fr 1fr">
         <div class="mock-box" style="padding:28px">
-          <div style="color:#2d4f42;font-weight:600;margin-bottom:18px;font-size:14px">vibescan-report.html</div>
+          <div style="color:var(--tx4);font-weight:600;margin-bottom:18px;font-size:14px">vibescan-report.html</div>
           <div style="display:flex;gap:10px;margin-bottom:20px">
             <div style="flex:1;background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.15);border-radius:10px;padding:14px 8px;text-align:center">
               <div style="font-size:24px;font-weight:800;color:#f87171;font-family:'Inter',sans-serif">2</div>
@@ -476,6 +493,37 @@ footer{border-top:1px solid var(--bd);padding:80px 24px 40px;background:var(--bg
       <p style="color:var(--tx2);font-size:15px;margin-top:12px">더 궁금한 점이 있으신가요? <a href="https://github.com/Aguantar/vibescan/issues" target="_blank" style="color:var(--accent3);text-decoration:underline;text-underline-offset:4px">GitHub에서 문의하세요.</a></p>
     </div>
     <div class="reveal" id="faqList"></div>
+  </div>
+</section>
+
+<section id="trust">
+  <div class="section-inner">
+    <div class="reveal" style="text-align:center;margin-bottom:60px">
+      <span class="section-pill">Trust</span>
+      <h2 class="section-title">오픈소스라서<br>안전합니다.</h2>
+      <p class="section-desc">VibeScan의 모든 코드는 GitHub에 공개되어 있습니다.</p>
+    </div>
+    <div class="card-2col">
+      <div class="m-card reveal">
+        <div style="padding:40px">
+          <div style="font-size:32px;margin-bottom:16px">🔍</div>
+          <h3 style="font-size:20px;font-weight:700;color:var(--tx);margin-bottom:12px">코드를 직접 확인하세요</h3>
+          <p style="color:var(--tx2);font-size:14px;line-height:1.8">어떤 파일을 읽는지, 어떤 패턴을 검사하는지, 네트워크 통신이 정말 없는지 — 소스코드에서 직접 확인할 수 있습니다. import 목록에 requests, urllib, http 같은 네트워크 모듈이 없습니다.</p>
+        </div>
+      </div>
+      <div class="m-card reveal">
+        <div style="padding:40px">
+          <div style="font-size:32px;margin-bottom:16px">🔒</div>
+          <h3 style="font-size:20px;font-weight:700;color:var(--tx);margin-bottom:12px">네트워크 통신 제로</h3>
+          <p style="color:var(--tx2);font-size:14px;line-height:1.8">VibeScan은 설치 후 인터넷 연결 없이도 동일하게 동작합니다. 텔레메트리, 사용 추적, 데이터 업로드가 없습니다. 비행기 모드에서도 스캔할 수 있습니다.</p>
+        </div>
+      </div>
+    </div>
+    <div class="reveal" style="text-align:center;margin-top:32px">
+      <div style="display:inline-block;background:var(--card);border:1px solid var(--card-bd);border-radius:14px;padding:20px 32px;font-size:14px;color:var(--tx2);line-height:1.8">
+        외부 의존성 <span style="color:var(--accent2);font-weight:700">단 2개</span> (typer, rich) · MIT 라이선스 · <a href="https://github.com/Aguantar/vibescan" target="_blank" style="color:var(--accent3);text-decoration:underline;text-underline-offset:4px">소스코드 보기</a>
+      </div>
+    </div>
   </div>
 </section>
 
