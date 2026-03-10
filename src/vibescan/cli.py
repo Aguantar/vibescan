@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import sys
 from pathlib import Path
 
 import typer
@@ -22,63 +21,6 @@ def _version_callback(value: bool) -> None:
         raise typer.Exit()
 
 
-_PROMPT_EN = (
-    "\nSelect report format (enter number or press Enter to skip)\n"
-    "  [1] Console (view in terminal)\n"
-    "  [2] HTML report\n"
-    "  [3] JSON report\n"
-    "  Choice: "
-)
-
-_PROMPT_KO = (
-    "\n보고서 형식을 선택하세요 (번호 입력 또는 Enter로 건너뛰기)\n"
-    "  [1] 콘솔 (터미널에서 보기)\n"
-    "  [2] HTML 보고서\n"
-    "  [3] JSON 보고서\n"
-    "  선택: "
-)
-
-
-def _prompt_report(result, lang: str, project_root: str) -> None:
-    """Ask user if they want to save a report after console output."""
-    from rich.console import Console
-
-    from vibescan.reporters.html_reporter import write_html_report
-    from vibescan.reporters.json_reporter import write_json_report
-
-    console = Console()
-    prompt = _PROMPT_KO if lang == "ko" else _PROMPT_EN
-
-    try:
-        choice = input(prompt).strip()
-    except (EOFError, KeyboardInterrupt):
-        return
-
-    if not choice:
-        return
-
-    if choice == "1":
-        from vibescan.reporters.console import print_report
-        print_report(result, console=console, lang=lang)
-        return
-
-    saved = []
-    if choice in ("2",):
-        html_path = Path("vibescan-report.html")
-        write_html_report(result, output=html_path, lang=lang)
-        saved.append(f"HTML → {html_path}")
-    if choice in ("3",):
-        json_path = Path("vibescan-report.json")
-        write_json_report(result, output=json_path)
-        saved.append(f"JSON → {json_path}")
-
-    if saved:
-        label = "저장 완료" if lang == "ko" else "Saved"
-        for s in saved:
-            console.print(f"[bold green]{label}:[/bold green] {s}")
-        console.print()
-
-
 @app.command()
 def scan(
     path: Path = typer.Argument(
@@ -94,9 +36,9 @@ def scan(
         help="Minimum severity to report: critical, high, medium, low, info.",
     ),
     output_format: str = typer.Option(
-        "",
+        "console",
         "--format", "-f",
-        help="Output format: console, json, html. If omitted, shows console and prompts for report.",
+        help="Output format: console, json, html.",
     ),
     lang: str = typer.Option(
         "auto",
@@ -130,8 +72,8 @@ def scan(
         raise typer.Exit(code=2)
 
     # Validate format
-    fmt = output_format.lower() if output_format else ""
-    if fmt and fmt not in ("console", "json", "html"):
+    fmt = output_format.lower()
+    if fmt not in ("console", "json", "html"):
         typer.echo(f"Error: Invalid format '{output_format}'. "
                    f"Choose from: console, json, html.")
         raise typer.Exit(code=2)
@@ -182,9 +124,5 @@ def scan(
     else:
         from vibescan.reporters.console import print_report
         print_report(result, lang=lang)
-
-        # Interactive prompt: only when format not specified, issues exist, and terminal is interactive
-        if not fmt and result.issues and sys.stdin.isatty():
-            _prompt_report(result, lang=lang, project_root=str(ctx.project_root))
 
     raise typer.Exit(code=result.exit_code)
