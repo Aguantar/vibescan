@@ -13,28 +13,28 @@
 html{scroll-behavior:smooth}
 ::selection{background:rgba(16,185,129,.25);color:#fff}
 body{font-family:'Inter','Noto Sans KR',-apple-system,sans-serif;overflow-x:hidden;background:var(--bg);color:var(--tx2)}
-body:not(.light){background:linear-gradient(180deg,#040f0a 0%,#071a10 30%,#061510 60%,#040f0a 100%)}
+body:not(.light){background:linear-gradient(180deg,#0a1a14 0%,#0e2219 30%,#0c1e16 60%,#0a1a14 100%)}
 a{text-decoration:none}
 code{font-family:'IBM Plex Mono',monospace}
 
 :root{
-  --bg:#040f0a;
-  --bg2:#061a12;
-  --card:rgba(167,210,194,.05);
-  --card-hover:rgba(167,210,194,.09);
-  --card-bd:rgba(167,210,194,.16);
-  --bd:rgba(255,255,255,.1);
+  --bg:#0a1a14;
+  --bg2:#0d2018;
+  --card:rgba(167,210,194,.07);
+  --card-hover:rgba(167,210,194,.11);
+  --card-bd:rgba(167,210,194,.18);
+  --bd:rgba(255,255,255,.12);
   --tx:#ffffff;
-  --tx2:#8faa9e;
-  --tx3:#5e7a6e;
-  --tx4:#c8ddd4;
+  --tx2:#a0bdb2;
+  --tx3:#6e9486;
+  --tx4:#d0e4db;
   --accent:#10b981;
   --accent2:#34d399;
   --accent3:#6ee7b7;
   --accent-glow:rgba(16,185,129,.12);
   --accent-glow2:rgba(52,211,153,.06);
   --cmd:#34d399;
-  --nav-bg:rgba(4,15,10,.75);
+  --nav-bg:rgba(10,26,20,.8);
   --mock:rgba(0,0,0,.3);
   --mock-bd:rgba(167,210,194,.08);
 }
@@ -69,6 +69,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;border-bottom:1px solid var(
 .nav-links{display:flex;align-items:center;gap:32px}
 .nav-link{font-size:14px;font-weight:500;color:var(--tx3);transition:color .2s;letter-spacing:-.02em}
 .nav-link:hover{color:var(--tx)}
+.nav-link.active{color:var(--accent2);font-weight:600}
+.light .nav-link.active{color:var(--accent)}
 .theme-toggle{width:44px;height:24px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;padding:2px;cursor:pointer;transition:all .3s}
 .light .theme-toggle{background:rgba(0,0,0,.04);border-color:rgba(0,0,0,.1)}
 .theme-dot{width:18px;height:18px;border-radius:50%;background:var(--accent2);transform:translateX(20px);transition:all .4s cubic-bezier(.68,-.55,.265,1.55)}
@@ -102,25 +104,21 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;border-bottom:1px solid var(
 /* ── Terminal ── */
 .terminal-wrap{position:relative;z-index:2;max-width:800px;width:100%}
 .terminal-glow{position:absolute;top:-40px;left:-40px;right:-40px;bottom:-40px;background:radial-gradient(ellipse,rgba(16,185,129,.12) 0%,rgba(16,185,129,.04) 50%,transparent 75%);filter:blur(30px);z-index:-1}
-.terminal{background:rgba(4,15,10,.85);backdrop-filter:blur(20px);border:1px solid var(--card-bd);border-radius:16px;overflow:hidden;box-shadow:0 40px 80px rgba(0,0,0,.5),0 0 0 1px rgba(167,210,194,.04) inset}
-.light .terminal{background:rgba(255,255,255,.92);box-shadow:0 20px 60px rgba(0,0,0,.06),0 0 0 1px rgba(0,0,0,.04) inset}
-.terminal-bar{display:flex;align-items:center;padding:16px 20px;border-bottom:1px solid var(--bd);background:rgba(255,255,255,.015)}
+.terminal{background:#fff;backdrop-filter:blur(20px);border:1px solid rgba(0,60,30,.12);border-radius:16px;overflow:hidden;box-shadow:0 40px 80px rgba(0,0,0,.3),0 0 0 1px rgba(0,0,0,.04) inset}
+.light .terminal{box-shadow:0 20px 60px rgba(0,0,0,.06),0 0 0 1px rgba(0,0,0,.04) inset}
+.terminal-bar{display:flex;align-items:center;padding:16px 20px;border-bottom:1px solid rgba(0,0,0,.08);background:rgba(0,0,0,.02)}
 .window-dots{display:flex;gap:8px}
 .dot{width:12px;height:12px;border-radius:50%}
-.terminal-title{flex:1;text-align:center;font-size:13px;color:var(--tx3);font-weight:500;margin-left:-48px}
-.terminal-body{padding:28px 32px;font-family:'IBM Plex Mono',monospace;font-size:13px;line-height:1.9}
-.t-cmd{color:var(--cmd);font-weight:600}
-.t-dim{color:var(--tx3)}
-.t-crit{color:#f87171}
-.t-high{color:#fbbf24}
-.t-med{color:#34d399}
-.t-low{color:#60a5fa}
-.light .t-crit{color:#dc2626}
-.light .t-high{color:#d97706}
-.light .t-med{color:#059669}
-.light .t-low{color:#2563eb}
-.t-sep{color:var(--bd);margin:14px 0;letter-spacing:-1px}
-.t-sum{color:var(--tx4);font-weight:600}
+.terminal-body{padding:28px 32px;font-family:'IBM Plex Mono',monospace;font-size:13px;line-height:1.9;color:#3a5c4e}
+.terminal-title{flex:1;text-align:center;font-size:13px;color:#6a8e7e;font-weight:500;margin-left:-48px}
+.t-cmd{color:#047857;font-weight:600}
+.t-dim{color:#6a8e7e}
+.t-crit{color:#dc2626}
+.t-high{color:#d97706}
+.t-med{color:#059669}
+.t-low{color:#2563eb}
+.t-sep{color:rgba(0,60,30,.15);margin:14px 0;letter-spacing:-1px}
+.t-sum{color:#2d4f42;font-weight:600}
 
 /* ── Sections ── */
 section{padding:124px 24px}
@@ -141,7 +139,7 @@ section{padding:124px 24px}
 .light .m-card:hover{box-shadow:0 8px 40px rgba(16,185,129,.06)}
 .card-grid{display:grid;gap:40px;align-items:center;padding:48px}
 .card-2col{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px}
-.mock-box{background:var(--mock);border:1px solid var(--mock-bd);border-radius:12px;padding:20px;font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.9}
+.mock-box{background:#fff;border:1px solid rgba(0,60,30,.12);border-radius:12px;padding:20px;font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.9;color:#3a5c4e}
 .chip{font-size:12px;font-weight:600;padding:5px 12px;background:rgba(16,185,129,.06);border:1px solid rgba(110,231,183,.1);border-radius:8px;color:var(--accent3);font-family:'IBM Plex Mono',monospace;display:inline-block;margin:0 4px 8px 0;transition:all .2s}
 .chip:hover{border-color:rgba(110,231,183,.25);background:rgba(16,185,129,.12)}
 .light .chip{background:rgba(16,185,129,.05);border-color:rgba(16,185,129,.1);color:var(--accent)}
@@ -197,8 +195,8 @@ footer{border-top:1px solid var(--bd);padding:80px 24px 40px;background:var(--bg
 .footer-bottom{border-top:1px solid var(--bd);padding-top:28px;display:flex;justify-content:space-between;color:var(--tx3);font-size:13px}
 
 /* ── Copy Button ── */
-.copy-wrap{position:relative;display:inline-flex;align-items:center;gap:0}
-.copy-btn{position:absolute;right:-44px;width:36px;height:36px;border-radius:10px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:var(--tx3);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .25s;font-size:16px}
+.copy-wrap{display:inline-flex;align-items:center;gap:12px}
+.copy-btn{width:36px;height:36px;border-radius:10px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:var(--tx3);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .25s;font-size:16px;flex-shrink:0}
 .copy-btn:hover{border-color:rgba(16,185,129,.35);color:var(--accent2);background:rgba(16,185,129,.08)}
 .copy-btn.copied{border-color:var(--accent);color:var(--accent);background:rgba(16,185,129,.12)}
 .light .copy-btn{border-color:rgba(0,60,30,.15);background:rgba(0,60,30,.04);color:var(--tx3)}
@@ -219,10 +217,10 @@ footer{border-top:1px solid var(--bd);padding:80px 24px 40px;background:var(--bg
 .step-arrow{position:absolute;right:-24px;top:50%;transform:translateY(-50%);color:var(--tx3);font-size:20px;opacity:.4}
 
 /* ── Light mode stronger overrides ── */
-.light .terminal{background:#fff;border-color:rgba(0,60,30,.15);box-shadow:0 20px 60px rgba(0,0,0,.08),0 0 0 1px rgba(0,60,30,.06) inset}
+.light .terminal{border-color:rgba(0,60,30,.15);box-shadow:0 20px 60px rgba(0,0,0,.08),0 0 0 1px rgba(0,60,30,.06) inset}
 .light .terminal-bar{border-bottom-color:rgba(0,60,30,.1);background:rgba(0,60,30,.02)}
 .light .m-card::before{background:linear-gradient(180deg,rgba(0,60,30,.14) 0%,rgba(0,60,30,.04) 100%)}
-.light .mock-box{border-color:rgba(0,60,30,.12);background:rgba(0,60,30,.03)}
+.light .mock-box{border-color:rgba(0,60,30,.12)}
 .light .rules-table{border-color:rgba(0,60,30,.15)}
 .light .rules-header{border-bottom-color:rgba(0,60,30,.1)}
 .light .rule-row{border-bottom-color:rgba(0,60,30,.08)}
@@ -247,7 +245,6 @@ footer{border-top:1px solid var(--bd);padding:80px 24px 40px;background:var(--bg
   .hero{padding:160px 16px 80px}
   .steps-grid{grid-template-columns:1fr}
   .step-arrow{display:none}
-  .copy-btn{right:-40px}
 }
 </style>
 </head>
@@ -386,8 +383,8 @@ footer{border-top:1px solid var(--bd);padding:80px 24px 40px;background:var(--bg
 
     <div class="m-card reveal">
       <div class="card-grid" style="grid-template-columns:1fr 1fr">
-        <div class="mock-box" style="background:rgba(0,0,0,.2);padding:28px">
-          <div style="color:var(--tx4);font-weight:600;margin-bottom:18px;font-size:14px">vibescan-report.html</div>
+        <div class="mock-box" style="padding:28px">
+          <div style="color:#2d4f42;font-weight:600;margin-bottom:18px;font-size:14px">vibescan-report.html</div>
           <div style="display:flex;gap:10px;margin-bottom:20px">
             <div style="flex:1;background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.15);border-radius:10px;padding:14px 8px;text-align:center">
               <div style="font-size:24px;font-weight:800;color:#f87171;font-family:'Inter',sans-serif">2</div>
@@ -406,7 +403,7 @@ footer{border-top:1px solid var(--bd);padding:80px 24px 40px;background:var(--bg
               <div style="font-size:10px;color:#60a5fa;font-family:'IBM Plex Mono',monospace;font-weight:700;margin-top:4px">LOW</div>
             </div>
           </div>
-          <div style="height:6px;border-radius:3px;background:rgba(255,255,255,.04);overflow:hidden;display:flex">
+          <div style="height:6px;border-radius:3px;background:rgba(0,0,0,.06);overflow:hidden;display:flex">
             <div style="width:33%;background:#f87171"></div>
             <div style="width:33%;background:#fbbf24"></div>
             <div style="width:17%;background:#34d399"></div>
@@ -620,6 +617,25 @@ document.getElementById("ruleCount").textContent = RULES.length;
 renderFilters();
 renderRules();
 renderFAQ();
+
+// Scroll spy for nav links
+const navLinks = document.querySelectorAll(".nav-link[href^='#']");
+const sections = Array.from(navLinks).map(link => {
+  const id = link.getAttribute("href").slice(1);
+  return { el: document.getElementById(id), link };
+}).filter(s => s.el);
+
+function updateActiveNav() {
+  const scrollY = window.scrollY + 120;
+  let current = sections[0];
+  for (const s of sections) {
+    if (s.el.offsetTop <= scrollY) current = s;
+  }
+  navLinks.forEach(l => l.classList.remove("active"));
+  if (current) current.link.classList.add("active");
+}
+window.addEventListener("scroll", updateActiveNav, { passive: true });
+updateActiveNav();
 </script>
 </body>
 </html>
