@@ -296,7 +296,7 @@ footer{border-top:1px solid var(--bd);padding:80px 24px 40px;background:var(--bg
     <em>Push</em> 전에,<br>코드를 <em>점검</em>하세요.
   </h1>
   <p class="hero-desc reveal">민감정보 노출, 보안 취약점, 설정 실수를 로컬에서 분석하여<br>초보자도 이해할 수 있는 설명형 리포트로 제공합니다.</p>
-  <a href="#get-started" class="hero-cta reveal">pip install vibescan-cli</a>
+  <a href="#get-started" class="hero-cta reveal">python -m vibescan .</a>
 
   <div class="terminal-wrap reveal">
     <div class="terminal-glow"></div>
@@ -310,7 +310,7 @@ footer{border-top:1px solid var(--bd);padding:80px 24px 40px;background:var(--bg
         <div class="terminal-title">vibescan — ~/my-project</div>
       </div>
       <div class="terminal-body">
-        <div class="t-cmd">$ vibescan scan .</div>
+        <div class="t-cmd">$ python -m vibescan .</div>
         <div class="t-dim" style="margin-top:10px;margin-bottom:14px">147개 파일 스캔 중...</div>
         <div>
           <div class="t-crit">CRITICAL  config.py:23        하드코딩된 AWS 키 (AKIA...)</div>
@@ -384,7 +384,7 @@ footer{border-top:1px solid var(--bd);padding:80px 24px 40px;background:var(--bg
           </div>
         </div>
         <div class="mock-box">
-          <div class="t-cmd">$ vibescan scan . --min-severity crit</div>
+          <div class="t-cmd">$ python -m vibescan . --min-severity crit</div>
           <div style="height:14px"></div>
           <div class="t-crit" style="font-weight:600">CRITICAL  .env:3</div>
           <div class="t-crit">  Hardcoded OpenAI API key: sk-proj-...</div>
@@ -486,8 +486,8 @@ footer{border-top:1px solid var(--bd);padding:80px 24px 40px;background:var(--bg
         <div class="step-num">2</div>
         <h3>스캔</h3>
         <p>프로젝트 디렉토리를 지정하고<br>스캔을 실행합니다.</p>
-        <div class="step-cmd"><span>vibescan scan .</span><button class="step-copy" onclick="copyCmd('vibescan scan .',this)" title="Copy"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button></div>
-        <p style="color:var(--tx3);font-size:12px;margin-top:10px;line-height:1.6">또는 <code style="color:var(--cmd);font-size:11px">python -m vibescan .</code><br><code style="color:var(--cmd);font-size:11px">--format html</code> <code style="color:var(--cmd);font-size:11px">--lang ko</code></p>
+        <div class="step-cmd"><span>python -m vibescan .</span><button class="step-copy" onclick="copyCmd('python -m vibescan .',this)" title="Copy"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button></div>
+        <p style="color:var(--tx3);font-size:12px;margin-top:10px;line-height:1.6"><code style="color:var(--cmd);font-size:11px">--format html</code> <code style="color:var(--cmd);font-size:11px">--lang ko</code></p>
         <span class="step-arrow">→</span>
       </div>
       <div class="step-card reveal">
@@ -499,8 +499,8 @@ footer{border-top:1px solid var(--bd);padding:80px 24px 40px;background:var(--bg
     </div>
     <div class="reveal" style="margin-top:32px;text-align:center">
       <div style="display:inline-block;background:var(--card);border:1px solid var(--card-bd);border-radius:14px;padding:20px 32px;font-size:13px;color:var(--tx2);line-height:1.8">
-        <span style="color:var(--accent2);font-weight:600">Tip</span> — <code style="color:var(--cmd);font-size:12px">vibescan scan .</code>이 안 될 때는 <code style="color:var(--cmd);font-size:12px">python -m vibescan .</code>을 사용하세요.<br>
-        두 명령은 동일하게 동작하며, 후자는 PATH 설정 없이 바로 실행됩니다.
+        <span style="color:var(--accent2);font-weight:600">Tip</span> — PATH가 설정되어 있다면 <code style="color:var(--cmd);font-size:12px">vibescan scan .</code>으로도 실행할 수 있습니다.<br>
+        두 명령은 동일하게 동작합니다.
       </div>
     </div>
   </div>
@@ -605,7 +605,7 @@ const FAQS = [
   { q: "어떤 리포트 형식을 지원하나요?", a: "콘솔 컬러 출력(기본), JSON 리포트(CI/CD 연동용), HTML 시각 리포트 세 가지 형식을 지원합니다. --format html 또는 --format json으로 변경할 수 있으며, CRITICAL/HIGH 발견 시 exit code 1을 반환합니다." },
   { q: "한국어를 지원하나요?", a: "네. 시스템 로케일을 자동 감지하여 한국어 환경에서는 한국어 리포트가 출력됩니다. --lang ko 또는 --lang en으로 직접 지정할 수도 있습니다. 모든 이슈 설명, 원인, 해결책이 한국어로 제공됩니다." },
   { q: "어떤 프로그래밍 언어를 분석하나요?", a: "Python과 JavaScript/TypeScript의 코드 패턴을 분석합니다. Secret 탐지와 Git Hygiene은 언어 무관하게 모든 프로젝트에서 동작합니다." },
-  { q: "vibescan scan과 python -m vibescan의 차이는?", a: "동일한 기능입니다. pip install 후 vibescan scan .으로 실행하거나, python -m vibescan .으로 실행할 수 있습니다. vibescan 명령어가 인식되지 않는 경우(PATH 미등록) python -m vibescan을 사용하세요. 단, python -m 방식에서는 scan 서브커맨드 없이 바로 경로를 지정합니다." },
+  { q: "vibescan scan과 python -m vibescan의 차이는?", a: "동일한 기능입니다. 기본 실행 방법은 python -m vibescan . 입니다. PATH가 설정되어 있다면 vibescan scan .으로도 실행할 수 있습니다. python -m 방식에서는 scan 서브커맨드 없이 바로 경로를 지정합니다." },
 ];
 
 const SEV_COLORS = { CRITICAL: "#f87171", HIGH: "#fbbf24", MEDIUM: "#34d399", LOW: "#60a5fa" };
