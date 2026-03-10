@@ -71,10 +71,15 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;border-bottom:1px solid var(
 .nav-link:hover{color:var(--tx)}
 .nav-link.active{color:var(--accent2);font-weight:600}
 .light .nav-link.active{color:var(--accent)}
-.theme-toggle{width:44px;height:24px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;padding:2px;cursor:pointer;transition:all .3s}
+.theme-toggle{display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);cursor:pointer;transition:all .3s;font-size:14px;user-select:none}
+.theme-toggle:hover{border-color:rgba(16,185,129,.3);background:rgba(16,185,129,.08)}
 .light .theme-toggle{background:rgba(0,0,0,.04);border-color:rgba(0,0,0,.1)}
-.theme-dot{width:18px;height:18px;border-radius:50%;background:var(--accent2);transform:translateX(20px);transition:all .4s cubic-bezier(.68,-.55,.265,1.55)}
-.light .theme-dot{background:var(--accent);transform:translateX(0)}
+.light .theme-toggle:hover{border-color:rgba(16,185,129,.3);background:rgba(16,185,129,.06)}
+.theme-icon-dark,.theme-icon-light{transition:all .3s}
+.theme-icon-light{display:none}
+.light .theme-icon-dark{display:none}
+.light .theme-icon-light{display:inline}
+.theme-label{font-size:11px;font-weight:600;color:var(--tx3);letter-spacing:.5px}
 .nav-gh{font-size:14px;font-weight:600;padding:8px 24px;border-radius:999px;color:var(--tx);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);transition:all .3s}
 .nav-gh:hover{border-color:rgba(16,185,129,.35);box-shadow:0 0 24px rgba(16,185,129,.12)}
 .light .nav-gh{background:rgba(0,0,0,.03);border-color:rgba(0,0,0,.1);color:var(--tx)}
@@ -282,7 +287,9 @@ footer{border-top:1px solid var(--bd);padding:80px 24px 40px;background:var(--bg
       <a href="#rules" class="nav-link">Rules</a>
       <a href="#faq" class="nav-link">FAQ</a>
       <div class="theme-toggle" onclick="toggleTheme()" title="Toggle Theme">
-        <div class="theme-dot" id="themeDot"></div>
+        <span class="theme-icon-dark">🌙</span>
+        <span class="theme-icon-light">☀️</span>
+        <span class="theme-label">THEME</span>
       </div>
       <a href="https://github.com/Aguantar/vibescan" target="_blank" class="nav-gh">GitHub</a>
     </div>
@@ -539,8 +546,8 @@ footer{border-top:1px solid var(--bd);padding:80px 24px 40px;background:var(--bg
   <div class="reveal">
     <h2 class="section-title" style="font-size:clamp(36px,5vw,56px);margin-bottom:20px">코드를 세상에<br><span style="background:linear-gradient(135deg,#34d399,#10b981);-webkit-background-clip:text;-webkit-text-fill-color:transparent">내보내기 전에.</span></h2>
     <p style="font-size:17px;color:var(--tx2);margin-bottom:44px;line-height:1.7">한 줄의 명령으로 프로젝트를 안전하게 점검하세요.</p>
-    <a href="https://github.com/Aguantar/vibescan" target="_blank" class="cta-btn">GitHub에서 시작하기</a>
-    <p style="color:var(--tx3);font-size:12px;margin-top:24px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase">Open Source · Local Only · Free</p>
+    <a href="#get-started" class="cta-btn">지금 시작하기</a>
+    <p style="color:var(--tx3);font-size:12px;margin-top:24px;line-height:1.8"><span style="font-weight:600;letter-spacing:1.5px;text-transform:uppercase">Open Source · Local Only · Free</span><br><a href="https://github.com/Aguantar/vibescan" target="_blank" style="color:var(--accent2);text-decoration:underline;text-underline-offset:4px">GitHub에서 소스코드 보기</a></p>
   </div>
 </section>
 
