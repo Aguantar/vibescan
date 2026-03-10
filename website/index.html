@@ -94,7 +94,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;border-bottom:1px solid var(
 .light .hero h1{background:linear-gradient(180deg,#06201a 20%,rgba(6,32,26,.55) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .hero h1 em{font-style:normal;background:linear-gradient(135deg,#34d399 0%,#10b981 50%,#059669 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .hero-desc{font-size:18px;color:var(--tx2);text-align:center;max-width:520px;line-height:1.7;margin-bottom:48px;font-weight:400;letter-spacing:-.01em}
-.hero-cta{display:inline-flex;align-items:center;gap:10px;padding:14px 32px;border-radius:999px;font-size:15px;font-weight:600;font-family:'IBM Plex Mono',monospace;color:var(--tx);background:radial-gradient(ellipse at 50% 180%,rgba(16,185,129,.15) 0%,rgba(255,255,255,0) 70%),rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);margin-bottom:100px;transition:all .35s;position:relative;overflow:hidden;letter-spacing:-.02em}
+.hero-cta{display:inline-flex;align-items:center;gap:10px;padding:14px 20px 14px 32px;border-radius:999px;font-size:15px;font-weight:600;font-family:'IBM Plex Mono',monospace;color:var(--tx);background:radial-gradient(ellipse at 50% 180%,rgba(16,185,129,.15) 0%,rgba(255,255,255,0) 70%),rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);margin-bottom:100px;transition:all .35s;position:relative;overflow:hidden;letter-spacing:-.02em}
 .hero-cta::after{content:'';position:absolute;inset:-1px;border-radius:999px;background:radial-gradient(circle at 50% 130%,rgba(16,185,129,.25),transparent 55%);opacity:0;transition:opacity .35s}
 .hero-cta:hover{border-color:rgba(16,185,129,.35);transform:translateY(-2px);box-shadow:0 8px 32px rgba(16,185,129,.15)}
 .hero-cta:hover::after{opacity:1}
@@ -195,12 +195,12 @@ footer{border-top:1px solid var(--bd);padding:80px 24px 40px;background:var(--bg
 .footer-bottom{border-top:1px solid var(--bd);padding-top:28px;display:flex;justify-content:space-between;color:var(--tx3);font-size:13px}
 
 /* ── Copy Button ── */
-.copy-wrap{display:inline-flex;align-items:center;gap:12px}
-.copy-btn{width:36px;height:36px;border-radius:10px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:var(--tx3);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .25s;font-size:16px;flex-shrink:0}
-.copy-btn:hover{border-color:rgba(16,185,129,.35);color:var(--accent2);background:rgba(16,185,129,.08)}
-.copy-btn.copied{border-color:var(--accent);color:var(--accent);background:rgba(16,185,129,.12)}
-.light .copy-btn{border-color:rgba(0,60,30,.15);background:rgba(0,60,30,.04);color:var(--tx3)}
-.light .copy-btn:hover{border-color:var(--accent);color:var(--accent);background:rgba(16,185,129,.06)}
+.copy-wrap{display:inline-flex;align-items:center}
+.copy-btn{width:32px;height:32px;border-radius:8px;border:none;background:rgba(255,255,255,.08);color:var(--tx3);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:all .25s;font-size:14px;flex-shrink:0;position:relative;z-index:2}
+.copy-btn:hover{color:var(--accent2);background:rgba(16,185,129,.15)}
+.copy-btn.copied{color:var(--accent);background:rgba(16,185,129,.18)}
+.light .copy-btn{background:rgba(0,60,30,.06);color:var(--tx3)}
+.light .copy-btn:hover{color:var(--accent);background:rgba(16,185,129,.1)}
 
 /* ── Steps ── */
 .steps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:60px}
@@ -275,10 +275,11 @@ footer{border-top:1px solid var(--bd);padding:80px 24px 40px;background:var(--bg
   </h1>
   <p class="hero-desc reveal">민감정보 노출, 보안 취약점, 설정 실수를 로컬에서 분석하여<br>초보자도 이해할 수 있는 설명형 리포트로 제공합니다.</p>
   <div class="copy-wrap reveal">
-    <a href="#get-started" class="hero-cta">pip install vibescan-cli</a>
-    <button class="copy-btn" onclick="copyCmd('pip install vibescan-cli',this)" title="Copy to clipboard">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-    </button>
+    <span class="hero-cta">pip install vibescan-cli
+      <button class="copy-btn" onclick="event.stopPropagation();copyCmd('pip install vibescan-cli',this)" title="Copy to clipboard">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+      </button>
+    </span>
   </div>
 
   <div class="terminal-wrap reveal">
@@ -567,10 +568,10 @@ function toggleTheme() {
 function copyCmd(text, btn) {
   navigator.clipboard.writeText(text).then(() => {
     btn.classList.add("copied");
-    btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+    btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
     setTimeout(() => {
       btn.classList.remove("copied");
-      btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+      btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
     }, 2000);
   });
 }
