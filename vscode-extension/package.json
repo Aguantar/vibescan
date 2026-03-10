@@ -3,7 +3,7 @@
   "displayName": "VibeScan",
   "description": "Scan your vibe-coded project for leaked secrets and security issues",
   "version": "0.1.0",
-  "publisher": "vibescan",
+  "publisher": "calme",
   "license": "MIT",
   "icon": "icon.png",
   "repository": {

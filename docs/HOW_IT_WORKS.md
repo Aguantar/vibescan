@@ -380,10 +380,43 @@ src/vibescan/
 │       ├── doc_secrets.py
 │       ├── mobile_files.py
 │       ├── system_configs.py
-│       └── editor_remnants.py
-└── reporters/
-    └── console.py           # Rich 콘솔 리포터
+│       ├── editor_remnants.py
+│       └── _filters.py          # 공유 오탐 필터 (한국어, 플레이스홀더, 환경변수 참조)
 ```
+
+---
+
+## VSCode Extension
+
+**디렉토리:** `vscode-extension/`
+
+VS Code에서 직접 보안 점검을 수행하는 확장입니다.
+
+### 동작 방식
+
+1. `Ctrl+Shift+P` → **VibeScan: Scan Project** 실행
+2. 내부적으로 `python -m vibescan <path> --format json` 호출
+3. JSON 결과를 파싱하여 VS Code Diagnostics로 매핑
+4. 에디터에서 해당 라인에 밑줄 표시 (빨강/노랑/파랑)
+5. Problems 패널에서 전체 이슈 목록 확인
+
+### 심각도 매핑
+
+| VibeScan | VS Code |
+|----------|---------|
+| CRITICAL | Error (빨간 밑줄) |
+| HIGH | Error (빨간 밑줄) |
+| MEDIUM | Warning (노란 밑줄) |
+| LOW | Information (파란 밑줄) |
+| INFO | Hint |
+
+### 설정 옵션
+
+| 설정 | 기본값 | 설명 |
+|------|--------|------|
+| `vibescan.scanOnSave` | `false` | 파일 저장 시 자동 스캔 |
+| `vibescan.pythonPath` | `"python"` | Python 실행 경로 |
+| `vibescan.minSeverity` | `"low"` | 최소 표시 심각도 |
 
 ---
 
