@@ -31,8 +31,8 @@ my-project     │ Collector│   │  Context   │
 2. **File Collector** — 프로젝트 파일 수집 (텍스트 파일 읽기 + 전체 파일 목록)
 3. **GitIgnore Parser** — `.gitignore` 패턴 수집
 4. **Rule Engine** — 17개 규칙으로 보안 이슈 탐지
-5. **Aggregator** — 이슈 필터링 + 정렬
-6. **Console Reporter** — 컬러 출력 (`rich`)
+5. **Aggregator** — 이슈 필터링 + 위험도 순 정렬
+6. **Reporter** — 콘솔/JSON/HTML 출력 (`rich`), 한국어/영어 지원
 
 ---
 
@@ -45,6 +45,9 @@ my-project     │ Collector│   │  Context   │
 def scan(
     path: Path = typer.Argument(".", ...),
     min_severity: str = typer.Option("info", "--min-severity", "-s"),
+    output_format: str = typer.Option("console", "--format", "-f"),
+    lang: str = typer.Option("auto", "--lang", "-l"),
+    output_file: str = typer.Option("", "--output", "-o"),
     version: bool = typer.Option(False, "--version", "-v"),
 ) -> None:
 ```
@@ -54,8 +57,20 @@ def scan(
 
 1. `path`를 `Path` 객체로 변환 (존재 여부 검증 포함)
 2. `min_severity`를 `Severity` enum으로 변환
-3. File Collector → Rule Engine → Reporter 파이프라인을 순서대로 실행
-4. CRITICAL 또는 HIGH 이슈가 있으면 **exit code 1** 반환 (CI/CD 연동용)
+3. `lang`이 `auto`이면 시스템 로케일을 감지하여 한국어/영어 자동 선택
+4. File Collector → Rule Engine → Reporter 파이프라인을 순서대로 실행
+5. CRITICAL 또는 HIGH 이슈가 있으면 **exit code 1** 반환 (CI/CD 연동용)
+
+**출력 옵션:**
+
+| 옵션 | 설명 |
+|------|------|
+| `--format console` | 터미널 컬러 출력 (기본값) |
+| `--format json` | JSON 출력 (CI/CD 연동용) |
+| `--format html` | HTML 시각 리포트 |
+| `--lang auto` | 시스템 언어 자동 감지 (기본값) |
+| `--lang ko` | 한국어 출력 |
+| `--lang en` | 영어 출력 |
 
 ---
 
@@ -289,32 +304,40 @@ filtered.sort(key=lambda i: -i.severity.rank)
 
 ---
 
-## 6단계: Console Reporter
+## 6단계: Reporter
 
-**파일:** `src/vibescan/reporters/console.py`
+**파일:** `src/vibescan/reporters/console.py`, `json_reporter.py`, `html_reporter.py`
 
-[rich](https://rich.readthedocs.io/) 라이브러리로 컬러풀한 터미널 출력을 생성합니다.
+3가지 출력 형식을 지원합니다.
+
+**콘솔 출력** (기본값) — [rich](https://rich.readthedocs.io/) 라이브러리로 컬러풀한 터미널 출력을 생성합니다.
 
 ```
-┌─────────────── Scan Complete ────────────────┐
-│ VibeScan scanned 147 files in ./my-project   │
+┌─────────────── 스캔 완료 ────────────────┐
+│ VibeScan이 ./my-project에서 147개 파일을 스캔했습니다 │
 └──────────────────────────────────────────────┘
 
- Summary
+ 요약
   CRITICAL   2
   HIGH       2
   MEDIUM     1
 
 config.py
-  [!] Hardcoded AWS access key detected (AKIA...)
-      Line 23
-      Why: Hardcoded API keys in source code can be extracted...
-      Fix: Move the key to an environment variable...
+  [!] 변수에 하드코딩된 시크릿이 포함되어 있을 수 있습니다
+      라인 23
+      원인: 코드에 직접 저장된 시크릿은 저장소에 접근할 수 있는 누구나 볼 수 있습니다.
+      해결: 하드코딩 대신 환경변수 또는 시크릿 매니저를 사용하세요.
+
+규칙에 대한 자세한 정보: https://vibescan.calmee.store/#rules
 ```
 
-- 파일별 그룹핑
+- 위험도 순 정렬 (CRITICAL → HIGH → MEDIUM → LOW → INFO)
 - 심각도별 색상 (CRITICAL=빨강 볼드, HIGH=빨강, MEDIUM=노랑, LOW=시안)
 - 각 이슈마다 Why/Fix 표시
+- 한국어/영어 자동 전환 (시스템 로케일 감지)
+
+**JSON 출력** — CI/CD 파이프라인 연동을 위한 머신 리더블 형식입니다.
+**HTML 출력** — 시각적 대시보드 리포트로 팀 공유에 적합합니다.
 
 ---
 
@@ -325,6 +348,7 @@ src/vibescan/
 ├── __init__.py              # 버전 정보
 ├── __main__.py              # python -m vibescan 지원
 ├── cli.py                   # CLI 진입점 (typer)
+├── i18n.py                  # 다국어 지원 (한국어/영어, 로케일 자동 감지)
 ├── collector/
 │   ├── context.py           # ProjectContext, TextFile 데이터 클래스
 │   ├── file_collector.py    # 파일 수집기
@@ -332,13 +356,17 @@ src/vibescan/
 ├── models/
 │   ├── issue.py             # Issue, Severity 모델
 │   └── scan_result.py       # ScanResult (summary, exit_code)
+├── reporters/
+│   ├── console.py           # 콘솔 컬러 출력 (rich)
+│   ├── json_reporter.py     # JSON 출력 (CI/CD 연동)
+│   └── html_reporter.py     # HTML 시각 리포트
 ├── rules/
 │   ├── base.py              # BaseRule 추상 클래스
 │   ├── registry.py          # 전체 규칙 등록소
 │   ├── git_hygiene.py       # Git 위생 규칙
 │   ├── dangerous_patterns.py # 위험 코드 패턴 규칙
 │   ├── structure.py         # 프로젝트 구조 규칙
-│   └── secret/              # 14개 시크릿 탐지 규칙
+│   └── secret/              # 14개 시크릿 탐지 규칙 + 오탐 필터
 │       ├── env_exposure.py
 │       ├── config_hardcode.py
 │       ├── cloud_credentials.py

@@ -37,6 +37,7 @@ LABELS_EN = {
     "fix": "Fix",
     "exit1": "Exit code 1: CRITICAL or HIGH issues found.",
     "exit0": "Exit code 0: No critical issues.",
+    "more_info": "For more details on rules: https://vibescan.calmee.store/#rules",
 }
 
 LABELS_KO = {
@@ -49,6 +50,7 @@ LABELS_KO = {
     "fix": "해결",
     "exit1": "Exit code 1: CRITICAL 또는 HIGH 이슈가 발견되었습니다.",
     "exit0": "Exit code 0: 심각한 이슈가 없습니다.",
+    "more_info": "규칙에 대한 자세한 정보: https://vibescan.calmee.store/#rules",
 }
 
 
@@ -113,4 +115,5 @@ def print_report(
         console.print(f"[bold red]{labels['exit1']}[/bold red]")
     else:
         console.print(f"[bold green]{labels['exit0']}[/bold green]")
+    console.print(f"[dim]{labels['more_info']}[/dim]")
     console.print()
