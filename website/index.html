@@ -20,9 +20,9 @@ code{font-family:'IBM Plex Mono',monospace}
 :root{
   --bg:#0a1a14;
   --bg2:#0d2018;
-  --card:rgba(167,210,194,.07);
-  --card-hover:rgba(167,210,194,.11);
-  --card-bd:rgba(167,210,194,.18);
+  --card:rgba(0,0,0,.35);
+  --card-hover:rgba(0,0,0,.4);
+  --card-bd:rgba(167,210,194,.15);
   --bd:rgba(255,255,255,.12);
   --tx:#ffffff;
   --tx2:#a0bdb2;
@@ -94,11 +94,11 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;border-bottom:1px solid var(
 .light .hero h1{background:linear-gradient(180deg,#06201a 20%,rgba(6,32,26,.55) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .hero h1 em{font-style:normal;background:linear-gradient(135deg,#34d399 0%,#10b981 50%,#059669 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .hero-desc{font-size:18px;color:var(--tx2);text-align:center;max-width:520px;line-height:1.7;margin-bottom:48px;font-weight:400;letter-spacing:-.01em}
-.hero-cta{display:inline-flex;align-items:center;gap:10px;padding:14px 32px;border-radius:999px;font-size:15px;font-weight:600;font-family:'IBM Plex Mono',monospace;color:var(--tx);background:radial-gradient(ellipse at 50% 180%,rgba(16,185,129,.15) 0%,rgba(255,255,255,0) 70%),rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);margin-bottom:100px;transition:all .35s;position:relative;overflow:hidden;letter-spacing:-.02em}
+.hero-cta{display:inline-flex;align-items:center;gap:10px;padding:14px 32px;border-radius:999px;font-size:15px;font-weight:600;font-family:'IBM Plex Mono',monospace;color:var(--tx);background:radial-gradient(ellipse at 50% 180%,rgba(16,185,129,.15) 0%,rgba(255,255,255,0) 70%),rgba(255,255,255,.04);border:1px solid rgba(16,185,129,.35);margin-bottom:100px;transition:all .35s;position:relative;overflow:hidden;letter-spacing:-.02em;box-shadow:0 0 20px rgba(16,185,129,.1)}
 .hero-cta::after{content:'';position:absolute;inset:-1px;border-radius:999px;background:radial-gradient(circle at 50% 130%,rgba(16,185,129,.25),transparent 55%);opacity:0;transition:opacity .35s}
 .hero-cta:hover{border-color:rgba(16,185,129,.35);transform:translateY(-2px);box-shadow:0 8px 32px rgba(16,185,129,.15)}
 .hero-cta:hover::after{opacity:1}
-.light .hero-cta{background:rgba(16,185,129,.05);border-color:rgba(16,185,129,.18);color:var(--accent)}
+.light .hero-cta{background:rgba(16,185,129,.05);border-color:rgba(16,185,129,.35);color:var(--accent);box-shadow:0 0 16px rgba(16,185,129,.08)}
 .light .hero-cta:hover{background:rgba(16,185,129,.08);box-shadow:0 8px 32px rgba(16,185,129,.1)}
 
 /* ── Terminal ── */
@@ -140,8 +140,8 @@ section{padding:124px 24px}
 .section-desc{color:var(--tx2);font-size:16px;margin-top:8px}
 
 /* ── Magic Cards ── */
-.m-card{position:relative;background:linear-gradient(180deg,rgba(167,210,194,.07) 0%,rgba(167,210,194,.015) 100%);border-radius:20px;overflow:hidden;transition:all .45s cubic-bezier(.6,.6,0,1)}
-.m-card::before{content:'';position:absolute;inset:0;border-radius:20px;padding:1px;background:linear-gradient(180deg,rgba(167,210,194,.18) 0%,rgba(167,210,194,.04) 100%);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;transition:all .35s}
+.m-card{position:relative;background:linear-gradient(180deg,rgba(0,0,0,.35) 0%,rgba(0,0,0,.25) 100%);border-radius:20px;overflow:hidden;transition:all .45s cubic-bezier(.6,.6,0,1)}
+.m-card::before{content:'';position:absolute;inset:0;border-radius:20px;padding:1px;background:linear-gradient(180deg,rgba(167,210,194,.12) 0%,rgba(167,210,194,.03) 100%);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;transition:all .35s}
 .m-card:hover::before{background:linear-gradient(180deg,rgba(52,211,153,.35) 0%,rgba(52,211,153,.08) 100%)}
 .m-card:hover{box-shadow:0 0 40px rgba(16,185,129,.06);transform:translateY(-2px)}
 .light .m-card{background:var(--card);box-shadow:0 2px 20px rgba(0,0,0,.04)}
@@ -164,7 +164,7 @@ section{padding:124px 24px}
 .light .filter-btn{background:rgba(0,0,0,.02);border-color:rgba(0,0,0,.08);color:var(--tx3)}
 .light .filter-btn:hover{color:var(--tx);border-color:rgba(0,0,0,.15)}
 .light .filter-btn.active{background:var(--accent);color:#fff;border-color:var(--accent);box-shadow:0 0 20px rgba(16,185,129,.12)}
-.rules-table{background:linear-gradient(180deg,rgba(167,210,194,.05) 0%,rgba(167,210,194,.01) 100%);border:1px solid var(--card-bd);border-radius:20px;overflow:hidden}
+.rules-table{background:linear-gradient(180deg,rgba(0,0,0,.35) 0%,rgba(0,0,0,.25) 100%);border:1px solid var(--card-bd);border-radius:20px;overflow:hidden}
 .light .rules-table{background:var(--card);box-shadow:0 2px 20px rgba(0,0,0,.04)}
 .rules-header{display:grid;grid-template-columns:90px 1fr 110px;padding:16px 32px;border-bottom:1px solid var(--bd);font-size:12px;color:var(--tx3);font-weight:600;letter-spacing:1px;font-family:'IBM Plex Mono',monospace}
 .rule-row{display:grid;grid-template-columns:90px 1fr 110px;padding:18px 32px;border-bottom:1px solid var(--bd);align-items:center;transition:all .2s}
@@ -208,7 +208,7 @@ footer{border-top:1px solid var(--bd);padding:80px 24px 40px;background:var(--bg
 
 /* ── Steps ── */
 .steps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:60px}
-.step-card{position:relative;background:linear-gradient(180deg,rgba(167,210,194,.07) 0%,rgba(167,210,194,.015) 100%);border:1px solid var(--card-bd);border-radius:20px;padding:40px 32px;text-align:center;transition:all .35s}
+.step-card{position:relative;background:linear-gradient(180deg,rgba(0,0,0,.35) 0%,rgba(0,0,0,.25) 100%);border:1px solid var(--card-bd);border-radius:20px;padding:40px 32px;text-align:center;transition:all .35s}
 .step-card:hover{border-color:rgba(16,185,129,.25);transform:translateY(-2px);box-shadow:0 8px 32px rgba(16,185,129,.06)}
 .light .step-card{background:var(--card);box-shadow:0 2px 16px rgba(0,0,0,.04)}
 .light .step-card:hover{border-color:var(--accent);box-shadow:0 8px 32px rgba(16,185,129,.08)}
@@ -245,6 +245,13 @@ footer{border-top:1px solid var(--bd);padding:80px 24px 40px;background:var(--bg
 .light .filter-btn{border-color:rgba(0,60,30,.12)}
 .light .chip{border-color:rgba(16,185,129,.18)}
 
+/* ── Scroll to top ── */
+.scroll-top{position:fixed;bottom:32px;right:32px;width:48px;height:48px;border-radius:50%;background:rgba(0,0,0,.5);border:1px solid rgba(167,210,194,.15);color:var(--accent2);display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;pointer-events:none;transition:all .3s;z-index:99;backdrop-filter:blur(10px);box-shadow:0 4px 20px rgba(0,0,0,.3)}
+.scroll-top.visible{opacity:1;pointer-events:auto}
+.scroll-top:hover{background:rgba(16,185,129,.15);border-color:rgba(16,185,129,.4);transform:translateY(-2px);box-shadow:0 8px 28px rgba(16,185,129,.15)}
+.light .scroll-top{background:rgba(255,255,255,.85);border-color:rgba(0,60,30,.12);color:var(--accent);box-shadow:0 4px 20px rgba(0,0,0,.08)}
+.light .scroll-top:hover{background:#fff;border-color:var(--accent);box-shadow:0 8px 28px rgba(16,185,129,.1)}
+
 /* ── Responsive ── */
 @media(max-width:768px){
   .nav-inner{padding:0 20px}
@@ -269,11 +276,11 @@ footer{border-top:1px solid var(--bd);padding:80px 24px 40px;background:var(--bg
   <div class="nav-inner">
     <a href="#home" class="nav-logo">VibeScan</a>
     <div class="nav-links">
+      <a href="#trust" class="nav-link">Trust</a>
       <a href="#features" class="nav-link">Features</a>
       <a href="#get-started" class="nav-link">Get Started</a>
       <a href="#rules" class="nav-link">Rules</a>
       <a href="#faq" class="nav-link">FAQ</a>
-      <a href="#trust" class="nav-link">Trust</a>
       <div class="theme-toggle" onclick="toggleTheme()" title="Toggle Theme">
         <div class="theme-dot" id="themeDot"></div>
       </div>
@@ -304,21 +311,21 @@ footer{border-top:1px solid var(--bd);padding:80px 24px 40px;background:var(--bg
       </div>
       <div class="terminal-body">
         <div class="t-cmd">$ vibescan scan .</div>
-        <div class="t-dim" style="margin-top:10px;margin-bottom:14px">Scanning 147 files...</div>
+        <div class="t-dim" style="margin-top:10px;margin-bottom:14px">147개 파일 스캔 중...</div>
         <div>
-          <div class="t-crit">CRITICAL  config.py:23        Hardcoded AWS key (AKIA...)</div>
-          <div class="t-crit">CRITICAL  docker-compose:8    POSTGRES_PASSWORD plaintext</div>
-          <div class="t-high">HIGH      src/api.js:45       API key: sk-proj-...</div>
-          <div class="t-high">HIGH      .env                not in .gitignore</div>
-          <div class="t-med">MEDIUM    settings.py:1       DEBUG = True</div>
-          <div class="t-low">LOW       root                No README.md found</div>
+          <div class="t-crit">CRITICAL  config.py:23        하드코딩된 AWS 키 (AKIA...)</div>
+          <div class="t-crit">CRITICAL  docker-compose:8    POSTGRES_PASSWORD 평문 노출</div>
+          <div class="t-high">HIGH      src/api.js:45       API 키: sk-proj-...</div>
+          <div class="t-high">HIGH      .env                .gitignore에 미등록</div>
+          <div class="t-med">MEDIUM    settings.py:1       DEBUG = True 활성화</div>
+          <div class="t-low">LOW       root                README.md 파일 없음</div>
         </div>
         <div class="t-sep">────────────────────────────────────────────────</div>
-        <div class="t-sum">Scanned 147 files | Found 6 issues</div>
+        <div class="t-sum">147개 파일 스캔 완료 | 6개 이슈 발견</div>
         <div class="t-dim" style="margin-top:4px">CRITICAL: 2  HIGH: 2  MEDIUM: 1  LOW: 1</div>
         <div class="t-sep">────────────────────────────────────────────────</div>
-        <div class="t-dim" style="margin-top:10px">Exit code 1: CRITICAL or HIGH issues found.</div>
-        <div class="t-dim">For more details on rules: vibescan.calmee.store/#rules</div>
+        <div class="t-dim" style="margin-top:10px">Exit code 1: CRITICAL 또는 HIGH 이슈가 발견되었습니다.</div>
+        <div class="t-dim">규칙에 대한 자세한 정보: vibescan.calmee.store/#rules</div>
       </div>
     </div>
   </div>
@@ -358,7 +365,7 @@ footer{border-top:1px solid var(--bd);padding:80px 24px 40px;background:var(--bg
 <section id="features">
   <div class="section-inner">
     <div class="reveal" style="text-align:center;margin-bottom:80px">
-      <span class="section-pill">Capabilities</span>
+      <span class="section-pill">Features</span>
       <h2 class="section-title">14개 카테고리의<br>보안 점검 엔진.</h2>
     </div>
 
@@ -463,7 +470,7 @@ footer{border-top:1px solid var(--bd);padding:80px 24px 40px;background:var(--bg
 <section id="get-started">
   <div class="section-inner">
     <div class="reveal" style="text-align:center">
-      <span class="section-pill">Getting Started</span>
+      <span class="section-pill">Get Started</span>
       <h2 class="section-title">3단계로 시작하세요.</h2>
       <p class="section-desc">설치부터 점검까지, 1분이면 충분합니다.</p>
     </div>
@@ -502,7 +509,7 @@ footer{border-top:1px solid var(--bd);padding:80px 24px 40px;background:var(--bg
 <section id="rules">
   <div class="rules-section">
     <div class="reveal" style="text-align:center;margin-bottom:48px">
-      <span class="section-pill">Ruleset</span>
+      <span class="section-pill">Rules</span>
       <h2 class="section-title">탐지 규칙 목록</h2>
       <p class="section-desc">VibeScan이 검사하는 <span id="ruleCount" style="color:var(--tx);font-weight:700">18</span>개의 규칙</p>
     </div>
@@ -519,7 +526,7 @@ footer{border-top:1px solid var(--bd);padding:80px 24px 40px;background:var(--bg
 <section id="faq">
   <div class="faq-wrap">
     <div class="reveal" style="text-align:center;margin-bottom:56px">
-      <span class="section-pill">Questions</span>
+      <span class="section-pill">FAQ</span>
       <h2 class="section-title">자주 묻는 질문</h2>
       <p style="color:var(--tx2);font-size:15px;margin-top:12px">더 궁금한 점이 있으신가요? <a href="https://github.com/Aguantar/vibescan/issues" target="_blank" style="color:var(--accent3);text-decoration:underline;text-underline-offset:4px">GitHub에서 문의하세요.</a></p>
     </div>
@@ -564,6 +571,10 @@ footer{border-top:1px solid var(--bd);padding:80px 24px 40px;background:var(--bg
     </div>
   </div>
 </footer>
+
+<button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="맨 위로">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
 
 <script>
 const RULES = [
@@ -676,7 +687,10 @@ function updateActiveNav() {
   navLinks.forEach(l => l.classList.remove("active"));
   if (current) current.link.classList.add("active");
 }
-window.addEventListener("scroll", updateActiveNav, { passive: true });
+window.addEventListener("scroll", () => {
+  updateActiveNav();
+  document.getElementById("scrollTop").classList.toggle("visible", window.scrollY > 600);
+}, { passive: true });
 updateActiveNav();
 </script>
 </body>
