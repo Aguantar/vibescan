@@ -152,7 +152,7 @@ Exit code 1: CRITICAL 또는 HIGH 이슈가 발견되었습니다.
 - [x] 콘솔/JSON/HTML 리포트
 - [x] 한국어 지원 (시스템 로케일 자동 감지)
 - [x] 오탐 필터 (한국어 에러 메시지, 플레이스홀더, 환경변수 참조 제외)
-- [x] VSCode Extension (마켓플레이스 배포 준비 완료)
+- [ ] VSCode Extension
 - [ ] Git History Scan
 - [ ] GitHub Actions 연동
 
