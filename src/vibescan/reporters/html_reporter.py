@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from vibescan.i18n import translate
 from vibescan.models.issue import Severity
 from vibescan.models.scan_result import ScanResult
 
@@ -36,6 +37,7 @@ def write_html_report(
                 f'</div>\n'
             )
 
+    t = lambda s: translate(s, lang)
     issue_rows = ""
     for issue in result.issues:
         color = SEV_COLORS[issue.severity.value.upper()]
@@ -46,9 +48,9 @@ def write_html_report(
             f'<span class="badge" style="background:{color}20;color:{color};border:1px solid {color}40">{issue.severity.value.upper()}</span>'
             f'<span class="issue-file">{issue.file}{line_str}</span>'
             f'</div>'
-            f'<div class="issue-msg">{issue.message}</div>'
-            f'<div class="issue-detail"><strong>{labels["why"]}:</strong> {issue.why}</div>'
-            f'<div class="issue-detail"><strong>{labels["fix"]}:</strong> {issue.fix}</div>'
+            f'<div class="issue-msg">{t(issue.message)}</div>'
+            f'<div class="issue-detail"><strong>{labels["why"]}:</strong> {t(issue.why)}</div>'
+            f'<div class="issue-detail"><strong>{labels["fix"]}:</strong> {t(issue.fix)}</div>'
             f'</div>\n'
         )
 

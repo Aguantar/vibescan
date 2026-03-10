@@ -7,6 +7,7 @@ from rich.panel import Panel
 from rich.table import Table
 from rich.text import Text
 
+from vibescan.i18n import translate
 from vibescan.models.issue import Severity
 from vibescan.models.scan_result import ScanResult
 
@@ -58,6 +59,7 @@ def print_report(
 ) -> None:
     console = console or Console()
     labels = LABELS_KO if lang == "ko" else LABELS_EN
+    t = lambda s: translate(s, lang)
 
     # Header
     console.print()
@@ -99,11 +101,11 @@ def print_report(
         color = SEVERITY_COLORS[sev]
 
         console.print(f"[bold underline]{issue.file}[/bold underline]")
-        console.print(f"  [{color}]{icon}[/{color}] {issue.message}")
+        console.print(f"  [{color}]{icon}[/{color}] {t(issue.message)}")
         if issue.line:
             console.print(f"      {labels['line']} {issue.line}")
-        console.print(f"      [dim]{labels['why']}:[/dim] {issue.why}")
-        console.print(f"      [dim]{labels['fix']}:[/dim] {issue.fix}")
+        console.print(f"      [dim]{labels['why']}:[/dim] {t(issue.why)}")
+        console.print(f"      [dim]{labels['fix']}:[/dim] {t(issue.fix)}")
         console.print()
 
     # Exit code hint

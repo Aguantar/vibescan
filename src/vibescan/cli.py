@@ -41,9 +41,9 @@ def scan(
         help="Output format: console, json, html.",
     ),
     lang: str = typer.Option(
-        "en",
+        "auto",
         "--lang", "-l",
-        help="Output language: en, ko.",
+        help="Output language: auto, en, ko. 'auto' detects system locale.",
     ),
     output_file: str = typer.Option(
         "",
@@ -78,10 +78,13 @@ def scan(
                    f"Choose from: console, json, html.")
         raise typer.Exit(code=2)
 
-    # Validate language
+    # Resolve language
     lang = lang.lower()
+    if lang == "auto":
+        from vibescan.i18n import detect_lang
+        lang = detect_lang()
     if lang not in ("en", "ko"):
-        typer.echo(f"Error: Invalid language '{lang}'. Choose from: en, ko.")
+        typer.echo(f"Error: Invalid language '{lang}'. Choose from: auto, en, ko.")
         raise typer.Exit(code=2)
 
     # Collect project context
