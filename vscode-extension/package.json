@@ -1,0 +1,74 @@
+{
+  "name": "vibescan",
+  "displayName": "VibeScan",
+  "description": "Scan your vibe-coded project for leaked secrets and security issues",
+  "version": "0.1.0",
+  "publisher": "vibescan",
+  "license": "MIT",
+  "icon": "icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Aguantar/vibescan"
+  },
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Linters",
+    "Other"
+  ],
+  "keywords": [
+    "security",
+    "secrets",
+    "scanner",
+    "vibe coding",
+    "linter"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "vibescan.scan",
+        "title": "VibeScan: Scan Project"
+      },
+      {
+        "command": "vibescan.clear",
+        "title": "VibeScan: Clear Diagnostics"
+      }
+    ],
+    "configuration": {
+      "title": "VibeScan",
+      "properties": {
+        "vibescan.scanOnSave": {
+          "type": "boolean",
+          "default": false,
+          "description": "Automatically scan on file save"
+        },
+        "vibescan.pythonPath": {
+          "type": "string",
+          "default": "python",
+          "description": "Path to Python executable"
+        },
+        "vibescan.minSeverity": {
+          "type": "string",
+          "enum": ["critical", "high", "medium", "low", "info"],
+          "default": "low",
+          "description": "Minimum severity level to show"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.85.0",
+    "@types/node": "^20.0.0",
+    "typescript": "^5.3.0"
+  }
+}
