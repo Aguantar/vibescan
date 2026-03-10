@@ -8,6 +8,7 @@ from pathlib import PurePosixPath
 from vibescan.collector.context import ProjectContext
 from vibescan.models.issue import Issue, Severity
 from vibescan.rules.base import BaseRule
+from vibescan.rules.secret._filters import contains_env_var_ref
 
 CICD_NAMES: set[str] = {
     ".gitlab-ci.yml",
@@ -51,7 +52,7 @@ class CICDPipelineRule(BaseRule):
                 stripped = line.strip()
                 if stripped.startswith("#"):
                     continue
-                if SECRET_IN_CICD_RE.search(line):
+                if SECRET_IN_CICD_RE.search(line) and not contains_env_var_ref(line):
                     issues.append(Issue(
                         rule_id="SECRET-CICD",
                         severity=Severity.CRITICAL,

@@ -8,6 +8,7 @@ from pathlib import PurePosixPath
 from vibescan.collector.context import ProjectContext
 from vibescan.models.issue import Issue, Severity
 from vibescan.rules.base import BaseRule
+from vibescan.rules.secret._filters import is_false_positive_value
 
 DOC_PATTERNS: list[re.Pattern[str]] = [
     re.compile(r'README\.md$', re.IGNORECASE),
@@ -23,7 +24,7 @@ SECRET_PATTERNS: list[tuple[re.Pattern[str], str]] = [
     (re.compile(r'glpat-[a-zA-Z0-9\-]{20,}'), "GitLab token"),
     (re.compile(r'xox[bp]-[a-zA-Z0-9\-]{20,}'), "Slack token"),
     (re.compile(
-        r'(?:password|secret|token|api_key)\s*[:=]\s*["\'`][^"\'`]{8,}["\'`]',
+        r'(?:password|secret|token|api_key)\s*[:=]\s*["\'`]([^"\'`]{8,})["\'`]',
         re.IGNORECASE,
     ), "hardcoded secret"),
     (re.compile(
@@ -50,7 +51,11 @@ class DocSecretsRule(BaseRule):
 
             for line_no, line in enumerate(tf.content.splitlines(), start=1):
                 for pattern, desc in SECRET_PATTERNS:
-                    if pattern.search(line):
+                    m = pattern.search(line)
+                    if m:
+                        # For patterns with capture groups, check false positives
+                        if m.lastindex and is_false_positive_value(m.group(1)):
+                            continue
                         issues.append(Issue(
                             rule_id="SECRET-DOC",
                             severity=Severity.HIGH,

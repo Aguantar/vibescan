@@ -7,6 +7,7 @@ import re
 from vibescan.collector.context import ProjectContext
 from vibescan.models.issue import Issue, Severity
 from vibescan.rules.base import BaseRule
+from vibescan.rules.secret._filters import is_false_positive_value
 
 # API key prefixes that strongly indicate real secrets
 API_KEY_PATTERNS: list[tuple[re.Pattern[str], str]] = [
@@ -25,9 +26,10 @@ API_KEY_PATTERNS: list[tuple[re.Pattern[str], str]] = [
 VARIABLE_PATTERN = re.compile(
     r'''(?:password|passwd|secret|token|api_key|apikey|auth_token|'''
     r'''access_key|private_key|client_secret)'''
-    r'''\s*[:=]\s*["'][^"']{8,}["']''',
+    r'''\s*[:=]\s*["']([^"']{8,})["']''',
     re.IGNORECASE,
 )
+
 
 # Connection strings with credentials
 CONN_STRING_PATTERN = re.compile(
@@ -65,18 +67,21 @@ class HardcodedPatternsRule(BaseRule):
                         break  # one issue per line
 
                 # Variable assignments
-                if VARIABLE_PATTERN.search(line):
-                    issues.append(Issue(
-                        rule_id="SECRET-HARDCODED",
-                        severity=Severity.HIGH,
-                        file=tf.path,
-                        line=line_no,
-                        message="Possible hardcoded secret in variable assignment",
-                        why="Secrets stored directly in code are visible to "
-                            "anyone with access to the repository.",
-                        fix="Use environment variables or a secrets manager "
-                            "instead of hardcoding values.",
-                    ))
+                var_match = VARIABLE_PATTERN.search(line)
+                if var_match:
+                    value = var_match.group(1)
+                    if not is_false_positive_value(value):
+                        issues.append(Issue(
+                            rule_id="SECRET-HARDCODED",
+                            severity=Severity.HIGH,
+                            file=tf.path,
+                            line=line_no,
+                            message="Possible hardcoded secret in variable assignment",
+                            why="Secrets stored directly in code are visible to "
+                                "anyone with access to the repository.",
+                            fix="Use environment variables or a secrets manager "
+                                "instead of hardcoding values.",
+                        ))
 
                 # Connection strings
                 if CONN_STRING_PATTERN.search(line):

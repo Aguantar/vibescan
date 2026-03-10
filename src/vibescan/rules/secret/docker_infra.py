@@ -8,6 +8,7 @@ from pathlib import PurePosixPath
 from vibescan.collector.context import ProjectContext
 from vibescan.models.issue import Issue, Severity
 from vibescan.rules.base import BaseRule
+from vibescan.rules.secret._filters import contains_env_var_ref
 
 INFRA_NAMES: set[str] = {
     "docker-compose.yml", "docker-compose.yaml",
@@ -58,7 +59,7 @@ class DockerInfraRule(BaseRule):
                 stripped = line.strip()
                 if stripped.startswith("#"):
                     continue
-                if SECRET_IN_INFRA_RE.search(line):
+                if SECRET_IN_INFRA_RE.search(line) and not contains_env_var_ref(line):
                     issues.append(Issue(
                         rule_id="SECRET-INFRA",
                         severity=Severity.HIGH,

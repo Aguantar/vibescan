@@ -8,6 +8,7 @@ from pathlib import PurePosixPath
 from vibescan.collector.context import ProjectContext
 from vibescan.models.issue import Issue, Severity
 from vibescan.rules.base import BaseRule
+from vibescan.rules.secret._filters import is_false_positive_value
 
 # Files that commonly contain hardcoded credentials
 SENSITIVE_CONFIG_NAMES: set[str] = {
@@ -28,7 +29,7 @@ SENSITIVE_PATH_PATTERNS: list[str] = [
 SECRET_VALUE_RE = re.compile(
     r'''(?:password|passwd|secret|token|api_key|apikey|auth_token|'''
     r'''access_key|private_key|client_secret|database_url|db_pass)'''
-    r'''\s*[:=]\s*["'][^"']{4,}["']''',
+    r'''\s*[:=]\s*["']([^"']{4,})["']''',
     re.IGNORECASE,
 )
 
@@ -48,7 +49,8 @@ class ConfigHardcodeRule(BaseRule):
                 continue
 
             for line_no, line in enumerate(tf.content.splitlines(), start=1):
-                if SECRET_VALUE_RE.search(line):
+                m = SECRET_VALUE_RE.search(line)
+                if m and not is_false_positive_value(m.group(1)):
                     issues.append(Issue(
                         rule_id="SECRET-CONFIG",
                         severity=Severity.HIGH,
