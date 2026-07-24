@@ -65,6 +65,63 @@ README, LICENSE, lockfile 존재 여부, `.ssh`/`.aws` 같은 위험 디렉토�
 
 ---
 
+## 보안 표준 매핑
+
+각 규칙이 실제로 탐지하는 로직(정규표현식·파일명 판정)을 코드 기준으로 확인하여, 국제 표준 취약점 분류인 **CWE**와 **OWASP Top 10:2025**(2026-01 배포)에 매핑했습니다. OWASP 카테고리는 부여한 CWE의 공식 2025 분류를 따릅니다.
+
+| 규칙 ID | 규칙명 | 탐지 내용 | CWE | OWASP:2025 |
+|---------|--------|-----------|-----|------------|
+| SECRET-ENV | 환경변수 파일 | `.env` / `.env.*` 파일 노출 (gitignore 여부로 심각도) | CWE-312, CWE-260 | A04 암호화 실패 |
+| SECRET-CONFIG | 설정파일 하드코딩 | `config.py`·`application.yml`의 `password`/`secret`/`token` 리터럴 | CWE-260, CWE-798 | A02 보안 설정오류 |
+| SECRET-CLOUD | 클라우드 인증파일 | `serviceAccountKey.json`, `.aws/credentials`, `terraform.tfstate` | CWE-312, CWE-522 | A04 암호화 실패 |
+| SECRET-INFRA | Docker/인프라 | `docker-compose`·k8s yaml의 하드코딩 시크릿 (env 참조 제외) | CWE-260, CWE-798 | A02 보안 설정오류 |
+| SECRET-CICD | CI/CD 파이프라인 | GitHub Actions·GitLab CI yml의 하드코딩 시크릿 | CWE-260, CWE-798 | A02 보안 설정오류 |
+| SECRET-IDE | IDE/도구 설정 | `.npmrc`·`.pypirc`·`.netrc`·`.vscode`의 인증 토큰 | CWE-798, CWE-522 | A07 인증 실패 |
+| SECRET-KEY | SSH키/인증서 | `.pem`·`.key`·`.jks`·`id_rsa` 등 개인키·인증서 파일 | CWE-312, CWE-321 | A04 암호화 실패 |
+| SECRET-HARDCODED | 코드 내 하드코딩 | `sk-`·`AKIA`·`ghp_` 키, `password=`, DB 접속문자열, 웹훅 | CWE-798, CWE-259 | A07 인증 실패 |
+| SECRET-FRONTEND-ENV | 프론트엔드 환경변수 | `NEXT_PUBLIC_`·`VITE_` + 시크릿 조합 (클라이언트 번들 노출) | CWE-200, CWE-312 | A01 접근통제 취약 |
+| SECRET-DATA | 데이터 파일 | `.sql`·`.db`·`.csv`·`.log`, 출력이 남은 `.ipynb` | CWE-312, CWE-540 | A04 암호화 실패 |
+| SECRET-DOC | 문서 내 시크릿 | README·docs에 붙여넣은 실제 토큰·시크릿 | CWE-540, CWE-798 | A01 접근통제 취약 |
+| SECRET-MOBILE | 모바일 앱 파일 | `Info.plist`·`AndroidManifest.xml`의 api_key·secret | CWE-798, CWE-312 | A07 인증 실패 |
+| SECRET-SYSTEM | DB/시스템 설정 | `.pgpass`·`.my.cnf`·`kubeconfig`·`.kube/config` | CWE-522, CWE-260 | A07 인증 실패 |
+| SECRET-REMNANT | 에디터 잔여물 | `.bash_history`·`.s3cfg`·`.htaccess`·`.DS_Store`·`*.swp` | CWE-200, CWE-312 | A01 접근통제 취약 |
+| GIT-* | Git Hygiene | 위험 확장자(`.pem`/`.key`/`.db`) 미ignore 추적 등 | CWE-538 | A01 접근통제 취약 |
+| DANGER-CODE | 위험 코드 패턴 | Python·JS·SQL 위험 패턴 다수 (아래 세부표) | (다수) | A05·A04·A02·A07·A08 |
+| STRUCTURE-* | 프로젝트 구조 | `.ssh`/`.aws`/`.kube` 디렉토리, lockfile 정합 | CWE-540, CWE-1104 | A01·A03 공급망 |
+
+`DANGER-CODE`는 단일 규칙에서 여러 취약점 유형을 탐지합니다.
+
+| 탐지 패턴 | CWE | OWASP:2025 |
+|-----------|-----|------------|
+| `eval()`·`exec()` | CWE-95 | A05 인젝션 |
+| `subprocess(shell=True)`·`os.system()`·`child_process.exec()` | CWE-78 | A05 인젝션 |
+| SQL f-string·템플릿리터럴·문자열 결합 쿼리 | CWE-89 | A05 인젝션 |
+| `innerHTML`·`dangerouslySetInnerHTML`·`document.write()` | CWE-79 | A05 인젝션 |
+| `pickle.loads()`·`yaml.load()` (Loader 미지정) | CWE-502 | A08 무결성 실패 |
+| `hashlib.md5`/`sha1` | CWE-327 | A04 암호화 실패 |
+| `jwt.decode()` (서명 미검증) | CWE-347 | A04 암호화 실패 |
+| `verify=False` (SSL 검증 비활성) | CWE-295 | A07 인증 실패 |
+| `DEBUG=True` | CWE-489 | A02 보안 설정오류 |
+| CORS 와일드카드·`ALLOWED_HOSTS=['*']` | CWE-942, CWE-16 | A02 보안 설정오류 |
+
+> `GIT-*`·`STRUCTURE-*`는 보안 관련 하위 점검(위험 파일 추적, 자격증명 디렉토리, lockfile)만 매핑했습니다. README·LICENSE 존재 여부, 평탄한 디렉토리 구조 등 코드 품질 점검은 취약점 분류에 해당하지 않아 제외했습니다.
+
+매핑 범위: 고유 CWE 20종, OWASP Top 10:2025 중 7개 카테고리(A01·A02·A03·A04·A05·A07·A08) 커버.
+
+---
+
+## 기존 SAST 도구와의 차이
+
+VibeScan은 Bandit·Semgrep과 탐지 깊이로 경쟁하는 도구가 아니라, 세 지점을 다르게 겨냥합니다.
+
+- **탐지 초점**: 17개 규칙 중 14개가 시크릿·자격증명 파일과 커밋되면 안 되는 파일에 집중되어, 코드 로직 취약점보다 "AI가 생성한 코드를 push할 때 무엇이 유출되는가"라는 저장소 위생·시크릿 노출에 무게가 있습니다. 이 영역은 Bandit/Semgrep보다 gitleaks·trufflehog에 가깝습니다.
+- **분석 기법**: Bandit은 Python AST를, Semgrep은 다중언어 시맨틱·데이터플로우(테인트) 분석을 사용하지만, VibeScan은 정규표현식과 파일명 휴리스틱만 사용합니다. 데이터플로우 기반 인젝션 탐지 깊이를 포기하는 대신, AST 파싱 없이 확장자만으로 언어를 넘나들고 설정이 필요 없는 경량성을 얻습니다.
+- **대상 사용자**: 바이브코딩·초보 사용자를 겨냥해 각 이슈에 "왜 위험한지"와 "어떻게 고치는지"를 한국어/영어로 설명하고, 완전 로컬(no-network)·의존성 2개로 push 직전에 실행하는 도구입니다.
+
+한계도 분명합니다. 테인트·AST 분석이 없어 복잡한 인젝션의 정오탐이 전문 SAST보다 약하고, 규칙 셋의 범위도 좁습니다. VibeScan의 자리는 "더 좋은 SAST"가 아니라 "push 직전 시크릿·위생 점검"입니다.
+
+---
+
 ## 사용법
 
 ```bash
