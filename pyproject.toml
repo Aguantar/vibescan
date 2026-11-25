@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "vibescan-cli"
-version = "0.2.5"
+dynamic = ["version"]
 description = "Scan your vibe-coded project for leaked secrets and security issues"
 readme = "README.md"
 license = {text = "MIT"}
@@ -37,6 +37,9 @@ dev = [
 
 [project.scripts]
 vibescan = "vibescan.cli:app"
+
+[tool.hatch.version]
+path = "src/vibescan/__init__.py"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/vibescan"]
